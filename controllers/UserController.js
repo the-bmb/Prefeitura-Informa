@@ -15,7 +15,7 @@ module.exports = {
           err: err.message,
         });
       }
-      else if(user){
+      else if(user && user.approved){
         res.status(200).json({
           status: 'OK',
         });
