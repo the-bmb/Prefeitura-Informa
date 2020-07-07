@@ -16,12 +16,12 @@ module.exports = {
         });
       }
       else if(user && user.approved){
-        res.status(200).json({
+        return res.status(200).json({
           status: 'OK',
         });
       }
       else{
-          res.status(403).json({
+        return res.status(403).json({
           status: 'Login Inválido',
         });
       }
@@ -31,13 +31,13 @@ module.exports = {
   async toAprove(req, res) {
     User.find({ approved:false }, function (err, users) {
       if(err) {
-        res.status(500).json({
+        return res.status(500).json({
           status: 'error',
           err: err.message,
         });
       }
       else if(users){
-        res.status(200).json({
+        return res.status(200).json({
           status: 'OK',
           users
         });
@@ -45,16 +45,25 @@ module.exports = {
     });
   },
   async store(req, res) {
-    req.body.approved = false;
-    const user = await User.create(req.body);
-    return res.json(user);
+    try{
+      req.body.approved = false;
+      const user = await User.create(req.body);
+      return res.status(200).json(user);
+    }catch(err){
+      return res.status(500).json({err});
+    }
+    
   },
 
   async update(req, res) {
-    const user = await User.findByIdAndUpdate(req.params.id, req.body, {
-      new: true
-    });
-    return res.json(user);
+    try{
+      const user = await User.findByIdAndUpdate(req.params.id, req.body, {
+        new: true
+      });
+      return res.status(200).json(user);
+    }catch(err){
+      return res.status(500).json({err});
+    }
   },
 
 };
