@@ -29,7 +29,7 @@ module.exports = {
     });
   },
   async toAprove(req, res) {
-    User.find({ approved:false }, function (err, user) {
+    User.find({ approved:false }, function (err, users) {
       if(err) {
         res.status(500).json({
           status: 'error',
